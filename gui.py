@@ -39,6 +39,12 @@ class CameraApp:
                                        command=self.toggle_face_recognition)
         self.checkbox.pack()
         
+        # Checkbox for pose detection
+        self.checkbox_var2 = tk.BooleanVar()
+        self.checkbox2 = tk.Checkbutton(root, text="Enable Pose Detection", variable=self.checkbox_var2,
+                                       command=self.toggle_pose_detection)
+        self.checkbox2.pack()
+        
         # Button to start the camera feed
         self.start_button = tk.Button(root, text="Start", command=self.start_camera)
         self.start_button.pack()
@@ -65,6 +71,8 @@ class CameraApp:
     
     def toggle_face_recognition(self):
         self.FaceRecognise = self.checkbox_var.get()
+    def toggle_pose_detection(self):
+        self.PoseDetect = self.checkbox_var2.get()
     
     def start_camera(self):
         if not self.is_camera_active:
@@ -81,7 +89,10 @@ class CameraApp:
             ret, frame = self.cap.read()
             if ret:
                 if self.FaceRecognise:
-                    frame=self.Recognise(frame)          
+                    frame=self.Recognise(frame)
+                if self.PoseDetect:
+                    #frame = call pose detection module
+                    pass
                 frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
                 image = Image.fromarray(frame)
                 image = ImageTk.PhotoImage(image)
